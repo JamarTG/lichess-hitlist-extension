@@ -7,15 +7,18 @@ const getOpponentIds = () => {
   return null;
 };
 
-const checkOpponentAgainstHistlist = () => (data) => {
-  let opponents = data.opponents || [];
+const checkOpponentAgainstHistlist = (data, player1, player2) => {
+  const opponents = data.opponents || [];
 
   opponents.forEach((opponent) => {
-    const player1IsOnHislist = player1.endsWith(opponent.toLowerCase());
-    const player2IsOnHislist = player2.endsWith(opponent.toLowerCase());
+    const opponentLower = opponent.toLowerCase();
 
-    if (player1IsOnHislist) chrome.runtime.sendMessage({ type: "notify", opponentId: player1 });
-    if (player2IsOnHislist) chrome.runtime.sendMessage({ type: "notify", opponentId: player2 });
+    if (player1.endsWith(opponentLower)) {
+      chrome.runtime.sendMessage({ type: "notify", opponentId: player1 });
+    }
+    if (player2.endsWith(opponentLower)) {
+      chrome.runtime.sendMessage({ type: "notify", opponentId: player2 });
+    }
   });
 };
 
@@ -24,7 +27,7 @@ const checkOpponent = async () => {
 
   if (opponentIds) {
     const [player1, player2] = opponentIds;
-    chrome.storage.local.get(["opponents"]);
+    chrome.storage.local.get(["opponents"], (data) => checkOpponentAgainstHistlist(data, player1, player2));
   }
 };
 
