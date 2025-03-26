@@ -1,0 +1,25 @@
+{
+    "manifest_version": 3,
+    "name": "Lichess Opponent Notifier",
+    "description": "Notify when you play the same opponent again or manually added opponent.",
+    "version": "1.0",
+    "permissions": [
+      "storage",
+      "activeTab",
+      "notifications"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "interface.html"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://lichess.org/*"],
+        "js": ["content.js"]
+      }
+    ]
+  }
+  
+  
